@@ -5,8 +5,6 @@ license-classifier: license扫描分类工具
 用法: python3 main.py
 """
 
-# 2023-05-22    kylinye    created
-
 import os
 import json
 import subprocess
@@ -35,7 +33,6 @@ class LicenseClassifier(object):
         :return:
         """
         task_request_file = os.environ.get("TASK_REQUEST")
-        # task_request_file = "task_request.json"
         with open(task_request_file, "r") as rf:
             task_request = json.load(rf)
         task_params = task_request["task_params"]
@@ -48,9 +45,7 @@ class LicenseClassifier(object):
         """
         # 代码目录直接从环境变量获取
         source_dir = os.environ.get("SOURCE_DIR", None)
-        # source_dir = "/Users/kylinye/Workspace/Opensource/CodeAnalysis"
         work_dir = os.environ.get("RESULT_DIR", None)
-        # work_dir = "workdir"
         print("[debug] source_dir: %s" % source_dir)
         # 其他参数从task_request.json文件获取
         task_params = self.__get_task_params()
@@ -69,7 +64,7 @@ class LicenseClassifier(object):
         else:  # 未获取到环境变量,即全量扫描,遍历source_dir获取需要扫描的文件列表
             scan_files = [source_dir]
         if not scan_files:
-            print("[error] 文件列表为空")
+            print("[error] To-be-scanned files is empty")
             return
         print("[debug] scan files: %s" % len(scan_files))
 
@@ -107,7 +102,7 @@ class LicenseClassifier(object):
             with open(error_output, "r") as f:
                 outputs_data = json.load(f)
         except:
-            print("[error] 结果文件未找到或无法加载")
+            print("[error] Resulting file not found or cannot be loaded")
             with open(outfile, "r") as fs:
                 print(fs.read())
             with open(result_path, "w") as fp:
