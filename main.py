@@ -45,7 +45,6 @@ class LicenseClassifier(object):
         """
         # 代码目录直接从环境变量获取
         source_dir = os.environ.get("SOURCE_DIR", None)
-        work_dir = os.environ.get("RESULT_DIR", None)
         print("[debug] source_dir: %s" % source_dir)
         # 其他参数从task_request.json文件获取
         task_params = self.__get_task_params()
@@ -68,8 +67,8 @@ class LicenseClassifier(object):
             return
         print("[debug] scan files: %s" % len(scan_files))
 
-        error_output = os.path.join(work_dir, "license.json")
-        outfile = os.path.join(work_dir, "output")
+        error_output = "license.json"
+        outfile = "output"
         fs = open(outfile, "w")
 
         # 三端环境
@@ -96,7 +95,7 @@ class LicenseClassifier(object):
 
         print("start data handle")
         result = []
-        result_path = os.path.join(work_dir, "result.json")
+        result_path = "result.json"
         # 数据处理
         try:
             with open(error_output, "r") as f:
