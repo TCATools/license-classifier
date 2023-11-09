@@ -54,6 +54,8 @@ class LicenseClassifier(object):
         re_exclude_path = task_params["path_filters"]["re_exclusion"]
         re_exclude = [".*/.git/.*"]
         re_exclude.extend(re_exclude_path)
+        result = []
+        result_path = "result.json"
 
         diff_file_json = os.environ.get("DIFF_FILES")
         if diff_file_json:  # 如果存在 DIFF_FILES, 说明是增量扫描, 直接获取增量文件列表
@@ -63,7 +65,9 @@ class LicenseClassifier(object):
         else:  # 未获取到环境变量,即全量扫描,遍历source_dir获取需要扫描的文件列表
             scan_files = [source_dir]
         if not scan_files:
-            print("[error] To-be-scanned files is empty")
+            print("[error] To-be-scanned files is empty, return empty result")
+            with open(result_path, "w") as fp:
+                json.dump(result, fp, indent=2)
             return
         print("[debug] scan files: %s" % len(scan_files))
 
@@ -94,14 +98,12 @@ class LicenseClassifier(object):
         subproc.communicate()
 
         print("start data handle")
-        result = []
-        result_path = "result.json"
         # 数据处理
         try:
             with open(error_output, "r") as f:
                 outputs_data = json.load(f)
         except:
-            print("[error] Resulting file not found or cannot be loaded")
+            print("[error] Resulting file not found or cannot be loaded, return empty result")
             with open(outfile, "r") as fs:
                 print(fs.read())
             with open(result_path, "w") as fp:
