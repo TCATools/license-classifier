@@ -88,6 +88,7 @@ CommonsClause               = "Commons-Clause"
 CPAL10                      = "CPAL-1.0"
 CPL10                       = "CPL-1.0"
 EGenix                      = "eGenix"
+Elastic20                   = "Elastic-2.0"
 EPL10                       = "EPL-1.0"
 EPL20                       = "EPL-2.0"
 EUPL10                      = "EUPL-1.0"
@@ -151,6 +152,7 @@ SGIB20                      = "SGI-B-2.0"
 SISSL12                     = "SISSL-1.2"
 SISSL                       = "SISSL"
 Sleepycat                   = "Sleepycat"
+SSPL10                      = "SSPL-1.0"
 UnicodeTOU                  = "Unicode-TOU"
 UnicodeDFS2015              = "Unicode-DFS-2015"
 UnicodeDFS2016              = "Unicode-DFS-2016"
@@ -354,4 +356,6 @@ forbiddenType = [
     Facebook2Clause,
     Facebook3Clause,
     FacebookExamples,
+    Elastic20,
+    SSPL10,
 ]
