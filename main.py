@@ -75,6 +75,9 @@ class LicenseClassifier(object):
         outfile = "output"
         fs = open(outfile, "w")
 
+        textchars = bytearray({7,8,9,10,12,13,27} | set(range(0x20, 0x100)) - {0x7f})
+        is_binary_string = lambda bytes: bool(bytes.translate(None, textchars))
+
         # 三端环境
         if sys.platform in ("darwin",):
             cmd = ["./tool/mac/identify_license"]
@@ -89,7 +92,7 @@ class LicenseClassifier(object):
             error_output
         ]
         if re_exclude:
-            cmd.extend(["-ignore_paths_re", ",".join(re_exclude)])
+            cmd.extend(["-ignore_paths_re", "\"%s\"" % ",".join(re_exclude)])
         cmd.extend(scan_files)
 
         scan_cmd = " ".join(cmd)
@@ -113,6 +116,10 @@ class LicenseClassifier(object):
         if outputs_data:
             for file_res in outputs_data:
                 path = file_res["Filepath"]
+                # 过滤掉二进制文件
+                if is_binary_string(open(path, 'rb').read(1024)):
+                    print("skip binary file: %s" % path)
+                    continue
                 for item in file_res["Classifications"]:
                     confidence = item["Confidence"]
                     if confidence < CONFIDENCE:
