@@ -117,8 +117,12 @@ class LicenseClassifier(object):
             for file_res in outputs_data:
                 path = file_res["Filepath"]
                 # 过滤掉二进制文件
-                if is_binary_string(open(path, 'rb').read(1024)):
-                    print("skip binary file: %s" % path)
+                try:
+                    if is_binary_string(open(path, 'rb').read(1024)):
+                        print("skip binary file: %s" % path)
+                        continue
+                except Exception as e:
+                    print("error: %s" % e)
                     continue
                 for item in file_res["Classifications"]:
                     confidence = item["Confidence"]
