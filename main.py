@@ -9,6 +9,7 @@ import os
 import json
 import subprocess
 import sys
+import platform
 from license_type import *
 
 CRITICAL = 1
@@ -82,7 +83,12 @@ class LicenseClassifier(object):
         if sys.platform in ("darwin",):
             cmd = ["./tool/mac/identify_license"]
         elif sys.platform in ("linux", "linux2"):
-            cmd = ["./tool/linux/identify_license"]
+            # arm64
+            arch = platform.machine().lower()
+            if arch in ('aarch64', 'arm64', 'armv8'):
+                cmd = ["./tool/linux_arm64/identify_license"]
+            else:
+                cmd = ["./tool/linux/identify_license"]
         elif sys.platform in ("win32"):
             cmd = ["./tool/windows/identify_license.exe"]
 
