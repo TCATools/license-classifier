@@ -47,6 +47,7 @@ class LicenseClassifier(object):
         # 代码目录直接从环境变量获取
         source_dir = os.environ.get("SOURCE_DIR", None)
         print("[debug] source_dir: %s" % source_dir)
+        work_dir = os.environ.get("RESULT_DIR", None)
         # 其他参数从task_request.json文件获取
         task_params = self.__get_task_params()
         # 规则
@@ -56,7 +57,7 @@ class LicenseClassifier(object):
         re_exclude = [".*/.git/.*"]
         re_exclude.extend(re_exclude_path)
         result = []
-        result_path = "result.json"
+        result_path = os.path.join(work_dir, "result.json")
 
         diff_file_json = os.environ.get("DIFF_FILES")
         if diff_file_json:  # 如果存在 DIFF_FILES, 说明是增量扫描, 直接获取增量文件列表
@@ -72,8 +73,8 @@ class LicenseClassifier(object):
             return
         print("[debug] scan files: %s" % len(scan_files))
 
-        error_output = "license.json"
-        outfile = "output"
+        error_output = os.path.join(work_dir, "license.json")
+        outfile = os.path.join(work_dir, "output")
         fs = open(outfile, "w")
 
         textchars = bytearray({7,8,9,10,12,13,27} | set(range(0x20, 0x100)) - {0x7f})
