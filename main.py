@@ -59,13 +59,7 @@ class LicenseClassifier(object):
         result = []
         result_path = os.path.join(work_dir, "result.json")
 
-        diff_file_json = os.environ.get("DIFF_FILES")
-        if diff_file_json:  # 如果存在 DIFF_FILES, 说明是增量扫描, 直接获取增量文件列表
-            print("[debug] get diff file: %s" % diff_file_json)
-            with open(diff_file_json, "r") as rf:
-                scan_files = json.load(rf)
-        else:  # 未获取到环境变量,即全量扫描,遍历source_dir获取需要扫描的文件列表
-            scan_files = [source_dir]
+        scan_files = [source_dir]
         if not scan_files:
             print("[error] To-be-scanned files is empty, return empty result")
             with open(result_path, "w") as fp:
